@@ -27,5 +27,10 @@
         <item name="colorOnSurfaceInverse">@color/md_theme_dark_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/md_theme_dark_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_dark_inversePrimary</item>
+
+        <!-- Big rounded corners everywhere -->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Awg.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Awg.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Awg.Large</item>
     </style>
 </resources>

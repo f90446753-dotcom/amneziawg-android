@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="brand_name" translatable="false">hassan Zakizadeh</string>
+
+    <!-- Home -->
+    <string name="awg_hero_badge" translatable="false">AmneziaWG</string>
+    <string name="awg_hero_title">Stay protected</string>
+    <plurals name="awg_tunnel_count">
+        <item quantity="one">%d tunnel</item>
+        <item quantity="other">%d tunnels</item>
+    </plurals>
+    <string name="awg_section_tunnels">Your tunnels</string>
+    <string name="awg_status_off">Not connected</string>
+    <string name="awg_add_tunnel">Add tunnel</string>
+    <string name="awg_empty_title">No tunnels yet</string>
+    <string name="awg_empty_body">Import a config file, scan a QR code or create a tunnel from scratch.</string>
+
+    <!-- Add tunnel sheet -->
+    <string name="awg_sheet_title">Add a tunnel</string>
+    <string name="awg_sheet_file_sub">Pick a .conf file or a zip archive</string>
+    <string name="awg_sheet_qr_sub">Scan a config with your camera</string>
+    <string name="awg_sheet_empty_sub">Write the configuration by hand</string>
+
+    <!-- Detail -->
+    <string name="awg_detail_connection">Connection</string>
+    <string name="awg_detail_obfuscation">Obfuscation</string>
+    <string name="awg_detail_advanced">Advanced</string>
+    <string name="awg_detail_copy_hint">Tap any value to copy it</string>
+
+    <!-- Editor -->
+    <string name="awg_editor_heading">Tunnel configuration</string>
+    <string name="awg_editor_sub">Edit the interface, obfuscation and peers</string>
+    <string name="awg_editor_interface">Interface</string>
+    <string name="awg_editor_special">Special junk packets</string>
+
+    <!-- Settings and log -->
+    <string name="awg_settings_heading">Settings</string>
+    <string name="awg_settings_sub">Tune how the app behaves</string>
+    <string name="awg_log_export">Export</string>
+</resources>

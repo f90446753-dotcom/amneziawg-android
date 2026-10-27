@@ -88,7 +88,17 @@ class Application : android.app.Application() {
     override fun onCreate() {
         Log.i(TAG, USER_AGENT)
         super.onCreate()
-        DynamicColors.applyToActivitiesIfAvailable(this)
+        registerActivityLifecycleCallbacks(object : android.app.Application.ActivityLifecycleCallbacks {
+            override fun onActivityCreated(activity: android.app.Activity, savedInstanceState: android.os.Bundle?) {
+                if (activity is androidx.appcompat.app.AppCompatActivity) activity.title = getString(R.string.brand_name)
+            }
+            override fun onActivityStarted(activity: android.app.Activity) {}
+            override fun onActivityResumed(activity: android.app.Activity) {}
+            override fun onActivityPaused(activity: android.app.Activity) {}
+            override fun onActivityStopped(activity: android.app.Activity) {}
+            override fun onActivitySaveInstanceState(activity: android.app.Activity, outState: android.os.Bundle) {}
+            override fun onActivityDestroyed(activity: android.app.Activity) {}
+        })
         rootShell = RootShell(applicationContext)
         toolsInstaller = ToolsInstaller(applicationContext, rootShell)
         preferencesDataStore = PreferenceDataStoreFactory.create { applicationContext.preferencesDataStoreFile("settings") }

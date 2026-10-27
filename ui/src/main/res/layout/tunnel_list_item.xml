@@ -32,20 +32,35 @@
         android:id="@+id/tunnel_list_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/list_item_background"
         android:descendantFocusability="beforeDescendants"
         android:focusable="true"
         android:nextFocusRight="@+id/tunnel_switch"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp">
+        android:paddingHorizontal="18dp"
+        android:paddingVertical="16dp">
+
+        <TextView
+            android:id="@+id/tunnel_status_dot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="&#9679;"
+            android:textColor="@{item.connectionStatus == ConnectionStatus.CONNECTED ? @color/tunnel_status_connected : (item.connectionStatus == ConnectionStatus.CONNECTING ? @color/tunnel_status_connecting : @color/tunnel_status_idle)}"
+            android:textSize="16sp"
+            tools:textColor="@color/tunnel_status_connected" />
 
         <LinearLayout
             android:id="@+id/tunnel_info_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="8dp"
             android:layout_toStartOf="@+id/tunnel_switch"
+            android:layout_toEndOf="@+id/tunnel_status_dot"
             android:orientation="vertical">
 
             <TextView
@@ -55,7 +70,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{key}"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:textAppearance="@style/TextAppearance.Awg.ItemTitle"
                 tools:text="@sample/interface_names.json/names/names/name" />
 
             <TextView
@@ -63,12 +78,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="@{item.connectionStatus == ConnectionStatus.CONNECTED ? @string/tunnel_status_connected : @string/tunnel_status_connecting}"
-                android:textAppearance="?attr/textAppearanceBodySmall"
-                android:textColor="@{item.connectionStatus == ConnectionStatus.CONNECTED ? @color/tunnel_status_connected : @color/tunnel_status_connecting}"
-                android:visibility="@{item.connectionStatus == ConnectionStatus.DISCONNECTED ? android.view.View.GONE : android.view.View.VISIBLE}"
-                tools:text="Подключено"
-                tools:textColor="@color/tunnel_status_connected" />
+                android:text="@{item.connectionStatus == ConnectionStatus.CONNECTED ? @string/tunnel_status_connected : (item.connectionStatus == ConnectionStatus.CONNECTING ? @string/tunnel_status_connecting : @string/awg_status_off)}"
+                android:textAppearance="@style/TextAppearance.Awg.ItemSub"
+                tools:text="Connected" />
         </LinearLayout>
 
         <org.amnezia.awg.widget.ToggleSwitch

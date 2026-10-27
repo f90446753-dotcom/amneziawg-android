@@ -1,27 +1,31 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright © 2017-2023 WireGuard LLC. All Rights Reserved.
-  ~ SPDX-License-Identifier: Apache-2.0
-  -->
-
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="96dp"
         tools:itemCount="20"
         tools:listitem="@layout/log_viewer_entry" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/share_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_action_share_white" />
+        android:text="@string/awg_log_export"
+        android:textColor="?attr/colorOnPrimary"
+        app:backgroundTint="?attr/colorPrimary"
+        app:icon="@drawable/ic_action_share_white"
+        app:iconTint="?attr/colorOnPrimary"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Awg.Pill" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

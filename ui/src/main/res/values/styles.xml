@@ -1,13 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AmneziaWgTheme.Toolbar" parent="Widget.Material3.Toolbar">
-        <item name="android:background">?attr/colorSurface</item>
+    <!-- ===================== Shapes ===================== -->
+    <style name="ShapeAppearance.Awg.Small" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">14dp</item>
     </style>
 
+    <style name="ShapeAppearance.Awg.Medium" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Awg.Large" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">28dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Awg.Pill" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.Awg.Card" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">24dp</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.Awg.BottomSheet" parent="">
+        <item name="cornerFamilyTopLeft">rounded</item>
+        <item name="cornerFamilyTopRight">rounded</item>
+        <item name="cornerSizeTopLeft">32dp</item>
+        <item name="cornerSizeTopRight">32dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <!-- ===================== Text ===================== -->
+    <style name="TextAppearance.Awg.Brand" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:letterSpacing">0.01</item>
+    </style>
+
+    <style name="TextAppearance.Awg.Label" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="TextAppearance.Awg.Value" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:fontFamily">monospace</item>
+    </style>
+
+    <style name="TextAppearance.Awg.Section" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:letterSpacing">0.14</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="TextAppearance.Awg.Title" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.Awg.Body" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="TextAppearance.Awg.HeroTitle" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/awg_hero_on</item>
+    </style>
+
+    <style name="TextAppearance.Awg.HeroSub" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/awg_hero_on_soft</item>
+    </style>
+
+    <style name="TextAppearance.Awg.ItemTitle" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.Awg.ItemSub" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- TextView styles used by the detail screens -->
+    <style name="Awg.Label" parent="">
+        <item name="android:textAppearance">@style/TextAppearance.Awg.Label</item>
+        <item name="android:paddingTop">14dp</item>
+    </style>
+
+    <style name="Awg.Value" parent="">
+        <item name="android:textAppearance">@style/TextAppearance.Awg.Value</item>
+        <item name="android:paddingTop">3dp</item>
+    </style>
+
+    <style name="Awg.Section" parent="">
+        <item name="android:textAppearance">@style/TextAppearance.Awg.Section</item>
+    </style>
+
+    <!-- ===================== Widgets ===================== -->
+    <style name="Widget.Awg.ActionBar" parent="Widget.AppCompat.ActionBar.Solid">
+        <item name="background">?android:attr/colorBackground</item>
+        <item name="titleTextStyle">@style/TextAppearance.Awg.Brand</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <style name="AmneziaWgTheme.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="titleTextAppearance">@style/TextAppearance.Awg.Brand</item>
+    </style>
+
+    <style name="Widget.Awg.Button" parent="Widget.Material3.Button">
+        <item name="android:minHeight">52dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Awg.Pill</item>
+    </style>
+
+    <style name="Widget.Awg.Button.Tonal" parent="Widget.Material3.Button.TonalButton">
+        <item name="android:minHeight">52dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Awg.Pill</item>
+    </style>
+
+    <style name="Widget.Awg.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">52dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Awg.Pill</item>
+    </style>
+
+    <style name="Widget.Awg.TextInput" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">14dp</item>
+        <item name="boxCornerRadiusTopEnd">14dp</item>
+        <item name="boxCornerRadiusBottomStart">14dp</item>
+        <item name="boxCornerRadiusBottomEnd">14dp</item>
+    </style>
+
+    <style name="Widget.Awg.BottomSheet" parent="Widget.Material3.BottomSheet">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Awg.BottomSheet</item>
+        <item name="backgroundTint">?attr/colorSurface</item>
+    </style>
+
+    <!-- White controls that sit on top of the gradient hero -->
+    <style name="ThemeOverlay.Awg.OnHero" parent="">
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="colorOnPrimary">@color/brand_start</item>
+        <item name="colorSurfaceVariant">#40FFFFFF</item>
+        <item name="colorOutline">#B3FFFFFF</item>
+        <item name="colorOnSurface">#FFFFFF</item>
+    </style>
+
+    <!-- ===================== App themes ===================== -->
     <style name="AppThemeBase" parent="AmneziaWgTheme">
         <item name="materialCardViewStyle">@style/AmneziaWgTheme.MaterialCardView</item>
         <item name="toolbarStyle">@style/AmneziaWgTheme.Toolbar</item>
+        <item name="actionBarStyle">@style/Widget.Awg.ActionBar</item>
+        <item name="materialButtonStyle">@style/Widget.Awg.Button</item>
+        <item name="textInputStyle">@style/Widget.Awg.TextInput</item>
         <item name="bottomSheetDialogTheme">@style/AmneziaWgTheme.BottomSheetDialog</item>
         <item name="android:statusBarColor">@null</item>
     </style>
@@ -21,13 +191,18 @@
     </style>
 
     <style name="AmneziaWgTheme.MaterialCardView" parent="Widget.Material3.CardView.Elevated">
-        <item name="cornerRadius">4dp</item>
-        <item name="contentPadding">8dp</item>
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeColor">@color/awg_stroke</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Awg.Card</item>
+        <item name="contentPadding">0dp</item>
     </style>
 
     <style name="AmneziaWgTheme.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/Widget.Awg.BottomSheet</item>
     </style>
 
     <style name="NoBackgroundTheme" parent="AppTheme">

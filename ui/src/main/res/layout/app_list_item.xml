@@ -22,18 +22,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="4dp"
         android:background="@drawable/list_item_background"
         android:gravity="center_vertical"
         android:onClick="@{(view) -> item.setSelected(!item.selected)}"
         android:orientation="horizontal"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp">
+        android:paddingVertical="10dp">
 
         <ImageView
             android:id="@+id/app_icon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="16dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="14dp"
             android:src="@{item.icon}"
             tools:src="@tools:sample/avatars" />
 
@@ -41,13 +42,14 @@
             android:id="@+id/app_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="10dp"
             android:layout_weight="1"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{key}"
-            android:textAppearance="?attr/textAppearanceBodyLarge"
+            android:textAppearance="@style/TextAppearance.Awg.ItemTitle"
+            android:textSize="15sp"
             tools:text="@tools:sample/full_names" />
 
         <CheckBox
