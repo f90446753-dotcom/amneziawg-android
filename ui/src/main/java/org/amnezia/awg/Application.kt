@@ -89,10 +89,20 @@ class Application : android.app.Application() {
         Log.i(TAG, USER_AGENT)
         super.onCreate()
         registerActivityLifecycleCallbacks(object : android.app.Application.ActivityLifecycleCallbacks {
+            private var splashFor: android.app.Activity? = null
+
             override fun onActivityCreated(activity: android.app.Activity, savedInstanceState: android.os.Bundle?) {
                 if (activity is androidx.appcompat.app.AppCompatActivity) activity.title = getString(R.string.brand_name)
+                if (activity is org.amnezia.awg.activity.MainActivity && savedInstanceState == null) splashFor = activity
             }
-            override fun onActivityStarted(activity: android.app.Activity) {}
+
+            override fun onActivityStarted(activity: android.app.Activity) {
+                if (activity === splashFor) {
+                    splashFor = null
+                    org.amnezia.awg.util.SplashOverlay.show(activity)
+                }
+            }
+
             override fun onActivityResumed(activity: android.app.Activity) {}
             override fun onActivityPaused(activity: android.app.Activity) {}
             override fun onActivityStopped(activity: android.app.Activity) {}

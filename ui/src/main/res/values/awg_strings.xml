@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="brand_name" translatable="false">hassan Zakizadeh</string>
+    <string name="brand_name" translatable="false">Hassan Zakizadeh</string>
 
     <!-- Home -->
     <string name="awg_hero_badge" translatable="false">AmneziaWG</string>
