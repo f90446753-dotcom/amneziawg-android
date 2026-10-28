@@ -21,4 +21,8 @@
     <string name="awg_ping_empty">No configs to test yet</string>
     <string name="awg_ping_best">Fastest: %1$s \u00b7 %2$d ms</string>
     <string name="awg_ping_no_best">No config responded</string>
+    <string name="awg_ping_timeout">Timeout</string>
+    <string name="awg_ping_stop_desc">Stop ping test</string>
+    <string name="awg_ping_start_desc">Run ping test on all configs</string>
+    <string name="awg_ping_no_tunnels">Add a tunnel first</string>
 </resources>

@@ -6,6 +6,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.databinding.Observable
@@ -15,7 +16,7 @@ import org.amnezia.awg.backend.Tunnel
 import org.amnezia.awg.databinding.ObservableKeyedArrayList
 import org.amnezia.awg.model.ObservableTunnel
 import org.amnezia.awg.util.FlyIn
-import org.amnezia.awg.util.PingSheet
+import org.amnezia.awg.util.PingResults
 
 /**
  * The gradient card on the home screen. Shows the name of the connected tunnel
@@ -25,6 +26,9 @@ class HeroStatusView @JvmOverloads constructor(context: Context, attrs: Attribut
     private var titleView: TextView? = null
     private var badgeView: TextView? = null
     private var shieldView: View? = null
+    private var pingButton: ImageView? = null
+    private var pingPulse: ObjectAnimator? = null
+    private val pingListener = Runnable { updatePingButton() }
 
     private var observed: ObservableKeyedArrayList<String, ObservableTunnel>? = null
     private val listened = ArrayList<ObservableTunnel>()
@@ -56,8 +60,9 @@ class HeroStatusView @JvmOverloads constructor(context: Context, attrs: Attribut
         titleView = findViewById(R.id.hero_title)
         badgeView = findViewById(R.id.hero_badge)
         shieldView = findViewById(R.id.hero_shield)
-        findViewById<View>(R.id.hero_ping)?.setOnClickListener {
-            PingSheet.show(context, observed?.toList() ?: emptyList())
+        pingButton = findViewById(R.id.hero_ping)
+        pingButton?.setOnClickListener {
+            PingResults.toggle(context, observed?.toList() ?: emptyList())
         }
     }
 
@@ -73,13 +78,41 @@ class HeroStatusView @JvmOverloads constructor(context: Context, attrs: Attribut
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         startListening()
+        PingResults.addListener(pingListener)
+        updatePingButton()
         refresh()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         stopListening()
+        PingResults.removeListener(pingListener)
+        pingPulse?.cancel()
+        pingPulse = null
         stopPulse()
+    }
+
+    /** Bolt icon when idle; stop icon and a gentle blink while the test is running. */
+    private fun updatePingButton() {
+        val button = pingButton ?: return
+        if (PingResults.running) {
+            button.setImageResource(R.drawable.ic_ping_stop)
+            button.contentDescription = context.getString(R.string.awg_ping_stop_desc)
+            if (pingPulse?.isRunning != true) {
+                pingPulse = ObjectAnimator.ofFloat(button, View.ALPHA, 1f, 0.45f).apply {
+                    duration = 700L
+                    repeatCount = ObjectAnimator.INFINITE
+                    repeatMode = ObjectAnimator.REVERSE
+                    start()
+                }
+            }
+        } else {
+            pingPulse?.cancel()
+            pingPulse = null
+            button.alpha = 1f
+            button.setImageResource(R.drawable.ic_ping_bolt)
+            button.contentDescription = context.getString(R.string.awg_ping_start_desc)
+        }
     }
 
     private fun startListening() {

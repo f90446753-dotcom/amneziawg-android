@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Glass surfaces -->
+    <color name="glass_fill">#26FFFFFF</color>
+    <color name="glass_fill_active">#664B3FD6</color>
+    <color name="glass_card_stroke">#33FFFFFF</color>
+    <color name="glass_stroke_start">#66FFFFFF</color>
+    <color name="glass_stroke_end">#14FFFFFF</color>
+    <color name="glass_sheen">#1AFFFFFF</color>
+    <color name="glass_sheen_end">#00FFFFFF</color>
+    <!-- App backdrop -->
+    <color name="glass_bg_start">#17133F</color>
+    <color name="glass_bg_mid">#0B0C12</color>
+    <color name="glass_bg_end">#08212C</color>
+    <color name="glass_blob_a">#885B4BFF</color>
+    <color name="glass_blob_a_end">#005B4BFF</color>
+    <color name="glass_blob_b">#5522B8F0</color>
+    <color name="glass_blob_b_end">#0022B8F0</color>
+    <color name="glass_blob_c">#55A855F7</color>
+    <color name="glass_blob_c_end">#00A855F7</color>
+    <!-- Ping quality scale -->
+    <color name="ping_great">#32D583</color>
+    <color name="ping_good">#A3E635</color>
+    <color name="ping_fair">#FACC15</color>
+    <color name="ping_poor">#FB923C</color>
+    <color name="ping_bad">#F87171</color>
+</resources>

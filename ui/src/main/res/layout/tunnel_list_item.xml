@@ -53,34 +53,52 @@
             tools:textColor="@color/tunnel_status_connected" />
 
         <LinearLayout
-            android:id="@+id/tunnel_info_layout"
-            android:layout_width="wrap_content"
+            android:id="@+id/tunnel_row_middle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="14dp"
             android:layout_marginEnd="8dp"
             android:layout_toStartOf="@+id/tunnel_switch"
             android:layout_toEndOf="@+id/tunnel_status_dot"
-            android:orientation="vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tunnel_name"
+            <LinearLayout
+                android:id="@+id/tunnel_info_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tunnel_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{key}"
+                    android:textAppearance="@style/TextAppearance.Awg.ItemTitle"
+                    tools:text="@sample/interface_names.json/names/names/name" />
+
+                <TextView
+                    android:id="@+id/tunnel_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@{item.connectionStatus == ConnectionStatus.CONNECTED ? @string/tunnel_status_connected : (item.connectionStatus == ConnectionStatus.CONNECTING ? @string/tunnel_status_connecting : @string/awg_status_off)}"
+                    android:textAppearance="@style/TextAppearance.Awg.ItemSub"
+                    tools:text="Connected" />
+            </LinearLayout>
+
+            <org.amnezia.awg.widget.PingBadgeView
+                android:id="@+id/tunnel_ping"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="@{key}"
-                android:textAppearance="@style/TextAppearance.Awg.ItemTitle"
-                tools:text="@sample/interface_names.json/names/names/name" />
-
-            <TextView
-                android:id="@+id/tunnel_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="@{item.connectionStatus == ConnectionStatus.CONNECTED ? @string/tunnel_status_connected : (item.connectionStatus == ConnectionStatus.CONNECTING ? @string/tunnel_status_connecting : @string/awg_status_off)}"
-                android:textAppearance="@style/TextAppearance.Awg.ItemSub"
-                tools:text="Connected" />
+                android:layout_marginStart="8dp"
+                app:tunnelName="@{key}"
+                tools:text="80 ms"
+                tools:textColor="@color/ping_great" />
         </LinearLayout>
 
         <org.amnezia.awg.widget.ToggleSwitch
