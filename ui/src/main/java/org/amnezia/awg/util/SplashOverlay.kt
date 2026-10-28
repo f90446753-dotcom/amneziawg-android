@@ -7,22 +7,21 @@ import android.os.Handler
 import android.os.Looper
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
-import android.view.animation.OvershootInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import kotlin.random.Random
 import org.amnezia.awg.R
 
 /**
- * Short animated intro that shows the brand name on top of the whole window,
- * then fades away and reveals the VPN screen underneath.
+ * Animated intro: the brand name flies in letter by letter from depth (blur -> sharp),
+ * then the whole intro fades and the VPN screen flies in underneath. Tap to skip.
  */
 object SplashOverlay {
-    private const val HOLD_MS = 1700L
-
     fun show(activity: Activity) {
         val decor = activity.window.decorView as? ViewGroup ?: return
         val density = activity.resources.displayMetrics.density
@@ -45,38 +44,39 @@ object SplashOverlay {
 
         val logo = ImageView(activity)
         logo.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_hero_shield))
-        logo.alpha = 0f
-        logo.scaleX = 0.5f
-        logo.scaleY = 0.5f
-        column.addView(logo, LinearLayout.LayoutParams(dp(88), dp(88)))
+        column.addView(logo, LinearLayout.LayoutParams(dp(84), dp(84)))
 
-        val name = TextView(activity)
-        name.text = activity.getString(R.string.brand_name)
-        name.setTextColor(0xFFFFFFFF.toInt())
-        name.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30f)
-        name.typeface = Typeface.DEFAULT_BOLD
-        name.letterSpacing = 0.04f
-        name.gravity = Gravity.CENTER
-        name.alpha = 0f
-        name.translationY = dp(16).toFloat()
-        val nameParams = LinearLayout.LayoutParams(
+        val row = LinearLayout(activity)
+        row.orientation = LinearLayout.HORIZONTAL
+        row.gravity = Gravity.CENTER
+        val letters = ArrayList<TextView>()
+        for (ch in activity.getString(R.string.brand_name)) {
+            val tv = TextView(activity)
+            tv.text = if (ch == ' ') "\u00a0" else ch.toString()
+            tv.setTextColor(0xFFFFFFFF.toInt())
+            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 34f)
+            tv.typeface = Typeface.SERIF
+            tv.letterSpacing = 0.01f
+            row.addView(tv)
+            letters.add(tv)
+        }
+        val rowParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        nameParams.topMargin = dp(22)
-        column.addView(name, nameParams)
+        rowParams.topMargin = dp(26)
+        column.addView(row, rowParams)
 
         val sub = TextView(activity)
         sub.text = activity.getString(R.string.awg_hero_badge)
         sub.setTextColor(0xCCFFFFFF.toInt())
         sub.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
         sub.letterSpacing = 0.2f
-        sub.alpha = 0f
         val subParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        subParams.topMargin = dp(6)
+        subParams.topMargin = dp(8)
         column.addView(sub, subParams)
 
         overlay.addView(
@@ -95,17 +95,30 @@ object SplashOverlay {
             )
         )
 
-        logo.animate().alpha(1f).scaleX(1f).scaleY(1f)
-            .setDuration(650).setInterpolator(OvershootInterpolator()).start()
-        name.animate().alpha(1f).translationY(0f)
-            .setStartDelay(250).setDuration(550).start()
-        sub.animate().alpha(1f)
-            .setStartDelay(550).setDuration(450).start()
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            overlay.animate().alpha(0f).setDuration(380).withEndAction {
+        val handler = Handler(Looper.getMainLooper())
+        var dismissed = false
+        fun dismiss() {
+            if (dismissed) return
+            dismissed = true
+            handler.removeCallbacksAndMessages(null)
+            val content = activity.findViewById<View>(android.R.id.content)
+            if (content != null) {
+                FlyIn.play(content, totalMs = 1500L, scaleFrom = 1.12f, rotationFrom = 12f, dropDp = 20f, blurDp = 14f)
+            }
+            overlay.animate().alpha(0f).setDuration(650).withEndAction {
                 decor.removeView(overlay)
             }.start()
-        }, HOLD_MS)
+        }
+        overlay.setOnClickListener { dismiss() }
+
+        // Logo first, then the letters one after another, then the small caption.
+        FlyIn.play(logo, delayMs = 0L, totalMs = 2200L, scaleFrom = 2.2f, rotationFrom = 55f, dropDp = 30f, blurDp = 16f)
+        var t = 300L
+        for (letter in letters) {
+            FlyIn.play(letter, delayMs = t)
+            t += 60L + Random.nextInt(45)
+        }
+        FlyIn.play(sub, delayMs = t, totalMs = 1600L, scaleFrom = 1.6f, rotationFrom = 40f, dropDp = 12f, blurDp = 8f)
+        handler.postDelayed({ dismiss() }, t + 1500L)
     }
 }
