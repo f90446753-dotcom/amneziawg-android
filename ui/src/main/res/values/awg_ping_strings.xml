@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="awg_ping_button">Ping test</string>
+    <string name="awg_ping_title">Ping test</string>
+    <string name="awg_ping_sub">Real latency to Google (8.8.8.8) measured through each config</string>
+    <string name="awg_ping_warning">Every config is connected one by one, tested, then disconnected. Your original connection is restored at the end. This takes a few seconds per config.</string>
+    <string name="awg_ping_ready">Ready to test</string>
+    <string name="awg_ping_running">Testing\u2026</string>
+    <string name="awg_ping_restoring">Restoring your connection\u2026</string>
+    <string name="awg_ping_start">Start test</string>
+    <string name="awg_ping_stop">Stop</string>
+    <string name="awg_ping_again">Test again</string>
+    <string name="awg_ping_idle">Not tested yet</string>
+    <string name="awg_ping_waiting">Waiting</string>
+    <string name="awg_ping_connecting">Connecting\u2026</string>
+    <string name="awg_ping_measuring">Measuring\u2026</string>
+    <string name="awg_ping_error">Could not connect</string>
+    <string name="awg_ping_failed">No internet through this config</string>
+    <string name="awg_ping_replies">Working \u00b7 %1$d of %2$d replies</string>
+    <string name="awg_ping_ms">%d ms</string>
+    <string name="awg_ping_empty">No configs to test yet</string>
+    <string name="awg_ping_best">Fastest: %1$s \u00b7 %2$d ms</string>
+    <string name="awg_ping_no_best">No config responded</string>
+</resources>

@@ -15,6 +15,7 @@ import org.amnezia.awg.backend.Tunnel
 import org.amnezia.awg.databinding.ObservableKeyedArrayList
 import org.amnezia.awg.model.ObservableTunnel
 import org.amnezia.awg.util.FlyIn
+import org.amnezia.awg.util.PingSheet
 
 /**
  * The gradient card on the home screen. Shows the name of the connected tunnel
@@ -55,6 +56,9 @@ class HeroStatusView @JvmOverloads constructor(context: Context, attrs: Attribut
         titleView = findViewById(R.id.hero_title)
         badgeView = findViewById(R.id.hero_badge)
         shieldView = findViewById(R.id.hero_shield)
+        findViewById<View>(R.id.hero_ping)?.setOnClickListener {
+            PingSheet.show(context, observed?.toList() ?: emptyList())
+        }
     }
 
     /** Called by data binding (app:tunnels="@{tunnels}"). */
