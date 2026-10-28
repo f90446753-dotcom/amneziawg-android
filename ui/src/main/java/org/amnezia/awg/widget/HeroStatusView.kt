@@ -46,6 +46,10 @@ class HeroStatusView @JvmOverloads constructor(context: Context, attrs: Attribut
         override fun onItemRangeRemoved(sender: ObservableList<ObservableTunnel>, positionStart: Int, itemCount: Int) { post { relisten() } }
     }
 
+    init {
+        clipChildren = false
+    }
+
     override fun onFinishInflate() {
         super.onFinishInflate()
         titleView = findViewById(R.id.hero_title)
@@ -121,7 +125,7 @@ class HeroStatusView @JvmOverloads constructor(context: Context, attrs: Attribut
             shownName = name
             title.text = name ?: context.getString(R.string.awg_hero_title)
             if (!first && title.height > 0) {
-                title.pivotX = 0f
+                title.pivotX = title.paddingLeft.toFloat()
                 title.pivotY = title.height / 2f
                 FlyIn.play(title, totalMs = 1500L, scaleFrom = 1.7f, rotationFrom = 50f, dropDp = 18f, blurDp = 12f)
             }

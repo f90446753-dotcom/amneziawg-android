@@ -26,6 +26,14 @@ object SplashOverlay {
         val decor = activity.window.decorView as? ViewGroup ?: return
         val density = activity.resources.displayMetrics.density
         fun dp(v: Int) = (v * density).toInt()
+        // Extra transparent room around animated views so the blur is never cut into a box.
+        val pad = dp(36)
+        fun roomFor(v: View) = v.setPadding(pad, pad, pad, pad)
+        fun wrapParams(w: Int = LinearLayout.LayoutParams.WRAP_CONTENT, h: Int = LinearLayout.LayoutParams.WRAP_CONTENT): LinearLayout.LayoutParams {
+            val lp = LinearLayout.LayoutParams(w, h)
+            lp.setMargins(-pad, -pad, -pad, -pad)
+            return lp
+        }
 
         val overlay = FrameLayout(activity)
         overlay.background = GradientDrawable(
@@ -44,7 +52,8 @@ object SplashOverlay {
 
         val logo = ImageView(activity)
         logo.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_hero_shield))
-        column.addView(logo, LinearLayout.LayoutParams(dp(84), dp(84)))
+        roomFor(logo)
+        column.addView(logo, wrapParams(dp(84) + 2 * pad, dp(84) + 2 * pad))
 
         val row = LinearLayout(activity)
         row.orientation = LinearLayout.HORIZONTAL
@@ -57,7 +66,8 @@ object SplashOverlay {
             tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 34f)
             tv.typeface = Typeface.SERIF
             tv.letterSpacing = 0.01f
-            row.addView(tv)
+            roomFor(tv)
+            row.addView(tv, wrapParams())
             letters.add(tv)
         }
         val rowParams = LinearLayout.LayoutParams(
@@ -65,6 +75,7 @@ object SplashOverlay {
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
         rowParams.topMargin = dp(26)
+        row.clipChildren = false
         column.addView(row, rowParams)
 
         val sub = TextView(activity)
@@ -72,12 +83,12 @@ object SplashOverlay {
         sub.setTextColor(0xCCFFFFFF.toInt())
         sub.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
         sub.letterSpacing = 0.2f
-        val subParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        subParams.topMargin = dp(8)
+        roomFor(sub)
+        val subParams = wrapParams()
+        subParams.topMargin = dp(8) - pad
         column.addView(sub, subParams)
+        column.clipChildren = false
+        overlay.clipChildren = false
 
         overlay.addView(
             column,
