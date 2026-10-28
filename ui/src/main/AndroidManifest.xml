@@ -4,6 +4,7 @@
     android:installLocation="internalOnly">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -107,6 +108,10 @@
             android:authorities="${applicationId}.exported-log"
             android:exported="false"
             android:grantUriPermissions="true" />
+
+        <receiver
+            android:name=".NotificationActionReceiver"
+            android:exported="false" />
 
         <receiver
             android:name=".BootShutdownReceiver"

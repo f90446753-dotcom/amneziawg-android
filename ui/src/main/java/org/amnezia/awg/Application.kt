@@ -100,6 +100,17 @@ class Application : android.app.Application() {
                 if (activity === splashFor) {
                     splashFor = null
                     org.amnezia.awg.util.SplashOverlay.show(activity)
+                    android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                        val prefs = getSharedPreferences("awg_notif", Context.MODE_PRIVATE)
+                        if (android.os.Build.VERSION.SDK_INT >= 33 &&
+                            !prefs.getBoolean("asked", false) &&
+                            !activity.isFinishing &&
+                            activity.checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED
+                        ) {
+                            prefs.edit().putBoolean("asked", true).apply()
+                            activity.requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 4711)
+                        }
+                    }, 3800L)
                 }
             }
 
@@ -131,6 +142,7 @@ class Application : android.app.Application() {
         }
         tunnelManager = TunnelManager(FileConfigStore(applicationContext))
         tunnelManager.onCreate()
+        org.amnezia.awg.util.ConnectionNotifier.start(this, coroutineScope)
 
         // Initialize network state monitor for auto-reconnection
         networkState = NetworkState(applicationContext) { oldType, newType ->
