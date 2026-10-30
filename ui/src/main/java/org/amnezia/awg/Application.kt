@@ -97,6 +97,7 @@ class Application : android.app.Application() {
             }
 
             override fun onActivityStarted(activity: android.app.Activity) {
+                if (activity is androidx.appcompat.app.AppCompatActivity) installBrandTitle(activity, activity === splashFor)
                 if (activity === splashFor) {
                     splashFor = null
                     org.amnezia.awg.util.SplashOverlay.show(activity)
@@ -111,6 +112,26 @@ class Application : android.app.Application() {
                             activity.requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 4711)
                         }
                     }, 3800L)
+                }
+            }
+
+            private fun installBrandTitle(activity: androidx.appcompat.app.AppCompatActivity, hideForIntro: Boolean) {
+                val bar = activity.supportActionBar ?: return
+                if (bar.customView is org.amnezia.awg.widget.BrandTitleView) return
+                val view = org.amnezia.awg.widget.BrandTitleView(activity)
+                bar.setDisplayShowTitleEnabled(false)
+                bar.setDisplayShowCustomEnabled(true)
+                bar.setCustomView(
+                    view,
+                    androidx.appcompat.app.ActionBar.LayoutParams(
+                        android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                        android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                        android.view.Gravity.START or android.view.Gravity.CENTER_VERTICAL
+                    )
+                )
+                if (hideForIntro) {
+                    view.hideForIntro()
+                    org.amnezia.awg.widget.BrandTitleView.setPendingIntro(view)
                 }
             }
 

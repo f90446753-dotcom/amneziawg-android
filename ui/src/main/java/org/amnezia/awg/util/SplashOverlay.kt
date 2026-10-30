@@ -116,6 +116,7 @@ object SplashOverlay {
             if (content != null) {
                 FlyIn.play(content, totalMs = 1500L, scaleFrom = 1.12f, rotationFrom = 12f, dropDp = 20f, blurDp = 14f)
             }
+            handler.postDelayed({ org.amnezia.awg.widget.BrandTitleView.playPendingIntro() }, 250L)
             overlay.animate().alpha(0f).setDuration(650).withEndAction {
                 decor.removeView(overlay)
             }.start()
