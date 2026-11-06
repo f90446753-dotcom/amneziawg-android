@@ -90,6 +90,7 @@ class Application : android.app.Application() {
         super.onCreate()
         registerActivityLifecycleCallbacks(object : android.app.Application.ActivityLifecycleCallbacks {
             private var splashFor: android.app.Activity? = null
+            private var aurora: org.amnezia.awg.widget.AuroraDrawable? = null
 
             override fun onActivityCreated(activity: android.app.Activity, savedInstanceState: android.os.Bundle?) {
                 if (activity is androidx.appcompat.app.AppCompatActivity) activity.title = getString(R.string.brand_name)
@@ -97,6 +98,13 @@ class Application : android.app.Application() {
             }
 
             override fun onActivityStarted(activity: android.app.Activity) {
+                if (activity is org.amnezia.awg.activity.MainActivity) {
+                    aurora?.detach()
+                    val drawable = org.amnezia.awg.widget.AuroraDrawable(activity)
+                    activity.window.setBackgroundDrawable(drawable)
+                    drawable.attach()
+                    aurora = drawable
+                }
                 if (activity is androidx.appcompat.app.AppCompatActivity) installBrandTitle(activity, activity === splashFor)
                 if (activity === splashFor) {
                     splashFor = null
@@ -137,7 +145,12 @@ class Application : android.app.Application() {
 
             override fun onActivityResumed(activity: android.app.Activity) {}
             override fun onActivityPaused(activity: android.app.Activity) {}
-            override fun onActivityStopped(activity: android.app.Activity) {}
+            override fun onActivityStopped(activity: android.app.Activity) {
+                if (activity is org.amnezia.awg.activity.MainActivity) {
+                    aurora?.detach()
+                    aurora = null
+                }
+            }
             override fun onActivitySaveInstanceState(activity: android.app.Activity, outState: android.os.Bundle) {}
             override fun onActivityDestroyed(activity: android.app.Activity) {}
         })

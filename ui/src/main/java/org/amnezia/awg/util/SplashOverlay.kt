@@ -80,9 +80,9 @@ object SplashOverlay {
 
         // 2) brand name (big gap above so the two animations never overlap)
         val nameLetters = ArrayList<TextView>()
-        val nameRow = makeRow(activity.getString(R.string.brand_name), 34f, 0xFFFFFFFF.toInt(), 0.01f, nameLetters)
+        val nameRow = makeRow(activity.getString(R.string.brand_name), 28f, 0xFFFFFFFF.toInt(), 0.01f, nameLetters)
         val nameParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-        nameParams.topMargin = dp(56)
+        nameParams.topMargin = dp(26)
         column.addView(nameRow, nameParams)
 
         // 3) signature logo
@@ -90,8 +90,8 @@ object SplashOverlay {
         logo.setImageResource(R.drawable.splash_signature)
         logo.scaleType = ImageView.ScaleType.FIT_CENTER
         roomFor(logo)
-        val logoParams = wrapParams(dp(170) + 2 * pad, dp(214) + 2 * pad)
-        logoParams.topMargin = dp(44) - pad
+        val logoParams = wrapParams(dp(128) + 2 * pad, dp(161) + 2 * pad)
+        logoParams.topMargin = dp(34) - pad
         column.addView(logo, logoParams)
 
         column.clipChildren = false
@@ -131,17 +131,20 @@ object SplashOverlay {
 
         // Timeline
         var t = 250L
+        // tagline: fast
         for (letter in tagLetters) {
-            FlyIn.play(letter, delayMs = t, totalMs = 2200L, scaleFrom = 2.0f, rotationFrom = 55f, dropDp = 18f, blurDp = 9f)
-            t += 30L
+            FlyIn.play(letter, delayMs = t, totalMs = 1300L, scaleFrom = 1.8f, rotationFrom = 55f, dropDp = 14f, blurDp = 8f)
+            t += 16L
         }
-        t += 350L
+        t += 220L
+        // name: medium
         for (letter in nameLetters) {
-            FlyIn.play(letter, delayMs = t)
+            FlyIn.play(letter, delayMs = t, totalMs = 2300L, scaleFrom = 2.2f, rotationFrom = 60f, dropDp = 24f, blurDp = 12f)
             t += 55L + Random.nextInt(35)
         }
-        t += 350L
-        FlyIn.play(logo, delayMs = t, totalMs = 2400L, scaleFrom = 1.8f, rotationFrom = 45f, dropDp = 30f, blurDp = 16f)
-        handler.postDelayed({ dismiss() }, t + 1700L)
+        t += 300L
+        // signature logo: the star of the show (longest, biggest, blurriest start)
+        FlyIn.play(logo, delayMs = t, totalMs = 3600L, scaleFrom = 2.8f, rotationFrom = 70f, dropDp = 44f, blurDp = 22f)
+        handler.postDelayed({ dismiss() }, t + 2200L)
     }
 }

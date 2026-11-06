@@ -41,6 +41,19 @@ object ConnectionNotifier {
     private var loop: Job? = null
     private var loopFor: ObservableTunnel? = null
 
+    /** True while a tunnel is up and its handshake is done. */
+    var connected = false
+        private set
+    private val connectionListeners = ArrayList<Runnable>()
+
+    fun addConnectionListener(r: Runnable) {
+        if (!connectionListeners.contains(r)) connectionListeners.add(r)
+    }
+
+    fun removeConnectionListener(r: Runnable) {
+        connectionListeners.remove(r)
+    }
+
     private val tunnelCallback = object : Observable.OnPropertyChangedCallback() {
         override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
             sync()
@@ -86,6 +99,13 @@ object ConnectionNotifier {
 
     /** Starts or stops the speed loop depending on whether a tunnel is up. */
     private fun sync() {
+        val nowConnected = list?.any {
+            it.state == Tunnel.State.UP && it.connectionStatus == ObservableTunnel.ConnectionStatus.CONNECTED
+        } == true
+        if (nowConnected != connected) {
+            connected = nowConnected
+            for (l in ArrayList(connectionListeners)) l.run()
+        }
         val active = list?.firstOrNull { it.state == Tunnel.State.UP }
         if (active == null) {
             loop?.cancel()
