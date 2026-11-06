@@ -8,6 +8,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.os.SystemClock
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -40,6 +42,7 @@ object ConnectionNotifier {
     private val listened = ArrayList<ObservableTunnel>()
     private var loop: Job? = null
     private var loopFor: ObservableTunnel? = null
+    private val mainHandler = Handler(Looper.getMainLooper())
 
     /** True while a tunnel is up and its handshake is done. */
     var connected = false
@@ -56,16 +59,16 @@ object ConnectionNotifier {
 
     private val tunnelCallback = object : Observable.OnPropertyChangedCallback() {
         override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-            sync()
+            mainHandler.post { sync() }
         }
     }
 
     private val listCallback = object : ObservableList.OnListChangedCallback<ObservableList<ObservableTunnel>>() {
-        override fun onChanged(sender: ObservableList<ObservableTunnel>) { relisten() }
-        override fun onItemRangeChanged(sender: ObservableList<ObservableTunnel>, positionStart: Int, itemCount: Int) { relisten() }
-        override fun onItemRangeInserted(sender: ObservableList<ObservableTunnel>, positionStart: Int, itemCount: Int) { relisten() }
-        override fun onItemRangeMoved(sender: ObservableList<ObservableTunnel>, fromPosition: Int, toPosition: Int, itemCount: Int) { relisten() }
-        override fun onItemRangeRemoved(sender: ObservableList<ObservableTunnel>, positionStart: Int, itemCount: Int) { relisten() }
+        override fun onChanged(sender: ObservableList<ObservableTunnel>) { mainHandler.post { relisten() } }
+        override fun onItemRangeChanged(sender: ObservableList<ObservableTunnel>, positionStart: Int, itemCount: Int) { mainHandler.post { relisten() } }
+        override fun onItemRangeInserted(sender: ObservableList<ObservableTunnel>, positionStart: Int, itemCount: Int) { mainHandler.post { relisten() } }
+        override fun onItemRangeMoved(sender: ObservableList<ObservableTunnel>, fromPosition: Int, toPosition: Int, itemCount: Int) { mainHandler.post { relisten() } }
+        override fun onItemRangeRemoved(sender: ObservableList<ObservableTunnel>, positionStart: Int, itemCount: Int) { mainHandler.post { relisten() } }
     }
 
     fun start(context: Context, coroutineScope: CoroutineScope) {
@@ -104,7 +107,13 @@ object ConnectionNotifier {
         } == true
         if (nowConnected != connected) {
             connected = nowConnected
-            for (l in ArrayList(connectionListeners)) l.run()
+            for (l in ArrayList(connectionListeners)) {
+                try {
+                    l.run()
+                } catch (e: Throwable) {
+                    android.util.Log.e("AWG", "Connection listener failed", e)
+                }
+            }
         }
         val active = list?.firstOrNull { it.state == Tunnel.State.UP }
         if (active == null) {

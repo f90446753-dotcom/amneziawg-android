@@ -64,7 +64,12 @@ class AuroraDrawable(context: Context) : Drawable() {
     private var fade: ValueAnimator? = null
     private var drift: ValueAnimator? = null
     private var attached = false
-    private val listener = Runnable { setConnected(ConnectionNotifier.connected) }
+    private val mainHandler = android.os.Handler(android.os.Looper.getMainLooper())
+    private val listener = Runnable {
+        mainHandler.post {
+            if (attached) setConnected(ConnectionNotifier.connected)
+        }
+    }
 
     fun attach() {
         if (attached) return

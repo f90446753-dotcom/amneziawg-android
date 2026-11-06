@@ -90,20 +90,19 @@ object SplashOverlay {
         logo.setImageResource(R.drawable.splash_signature)
         logo.scaleType = ImageView.ScaleType.FIT_CENTER
         roomFor(logo)
-        val logoParams = wrapParams(dp(128) + 2 * pad, dp(161) + 2 * pad)
+        val logoParams = wrapParams(dp(100) + 2 * pad, dp(126) + 2 * pad)
         logoParams.topMargin = dp(34) - pad
         column.addView(logo, logoParams)
 
         column.clipChildren = false
         overlay.clipChildren = false
-        overlay.addView(
-            column,
-            FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                Gravity.CENTER
-            )
+        val columnParams = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.WRAP_CONTENT,
+            FrameLayout.LayoutParams.WRAP_CONTENT,
+            Gravity.CENTER
         )
+        columnParams.topMargin = dp(110) // pushes the whole group lower on the screen
+        overlay.addView(column, columnParams)
         decor.addView(
             overlay,
             FrameLayout.LayoutParams(
