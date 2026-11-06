@@ -26,6 +26,9 @@ import org.amnezia.awg.R
  * The texts are far apart vertically so a flying letter never lands on top of another text.
  */
 object SplashOverlay {
+    /** Vertical position of the brand name: 0.5 = exact middle of the screen, smaller = higher. */
+    private const val NAME_CENTER_FRACTION = 0.45f
+
     fun show(activity: Activity) {
         val decor = activity.window.decorView as? ViewGroup ?: return
         val density = activity.resources.displayMetrics.density
@@ -96,13 +99,22 @@ object SplashOverlay {
 
         column.clipChildren = false
         overlay.clipChildren = false
-        val columnParams = FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.WRAP_CONTENT,
-            FrameLayout.LayoutParams.WRAP_CONTENT,
-            Gravity.CENTER
+        overlay.addView(
+            column,
+            FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER
+            )
         )
-        columnParams.topMargin = dp(110) // pushes the whole group lower on the screen
-        overlay.addView(column, columnParams)
+        // Place the whole group so that the brand name sits a little above the middle of the screen.
+        column.addOnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
+            val h = overlay.height
+            if (h > 0) {
+                val nameCenter = nameRow.top + nameRow.height / 2f
+                v.translationY = h * NAME_CENTER_FRACTION - (v.top + nameCenter)
+            }
+        }
         decor.addView(
             overlay,
             FrameLayout.LayoutParams(
