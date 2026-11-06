@@ -18,8 +18,12 @@ import kotlin.random.Random
 import org.amnezia.awg.R
 
 /**
- * Animated intro: the brand name flies in letter by letter from depth (blur -> sharp),
- * then the whole intro fades and the VPN screen flies in underneath. Tap to skip.
+ * Animated intro, in this order:
+ *   1. "design and development" (letter by letter)
+ *   2. the brand name (letter by letter)
+ *   3. the signature logo
+ * Everything flies in from depth (blur -> sharp). Tap anywhere to skip.
+ * The texts are far apart vertically so a flying letter never lands on top of another text.
  */
 object SplashOverlay {
     fun show(activity: Activity) {
@@ -50,46 +54,48 @@ object SplashOverlay {
         column.orientation = LinearLayout.VERTICAL
         column.gravity = Gravity.CENTER_HORIZONTAL
 
-        val logo = ImageView(activity)
-        logo.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_hero_shield))
-        roomFor(logo)
-        column.addView(logo, wrapParams(dp(84) + 2 * pad, dp(84) + 2 * pad))
-
-        val row = LinearLayout(activity)
-        row.orientation = LinearLayout.HORIZONTAL
-        row.gravity = Gravity.CENTER
-        val letters = ArrayList<TextView>()
-        for (ch in activity.getString(R.string.brand_name)) {
-            val tv = TextView(activity)
-            tv.text = if (ch == ' ') "\u00a0" else ch.toString()
-            tv.setTextColor(0xFFFFFFFF.toInt())
-            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 34f)
-            tv.typeface = Typeface.SERIF
-            tv.letterSpacing = 0.01f
-            roomFor(tv)
-            row.addView(tv, wrapParams())
-            letters.add(tv)
+        fun makeRow(text: String, sizeSp: Float, color: Int, spacing: Float, list: ArrayList<TextView>): LinearLayout {
+            val row = LinearLayout(activity)
+            row.orientation = LinearLayout.HORIZONTAL
+            row.gravity = Gravity.CENTER
+            row.clipChildren = false
+            for (ch in text) {
+                val tv = TextView(activity)
+                tv.text = if (ch == ' ') "\u00a0" else ch.toString()
+                tv.setTextColor(color)
+                tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, sizeSp)
+                tv.typeface = Typeface.SERIF
+                tv.letterSpacing = spacing
+                roomFor(tv)
+                row.addView(tv, wrapParams())
+                list.add(tv)
+            }
+            return row
         }
-        val rowParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        rowParams.topMargin = dp(26)
-        row.clipChildren = false
-        column.addView(row, rowParams)
 
-        val sub = TextView(activity)
-        sub.text = activity.getString(R.string.awg_hero_badge)
-        sub.setTextColor(0xCCFFFFFF.toInt())
-        sub.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
-        sub.letterSpacing = 0.2f
-        roomFor(sub)
-        val subParams = wrapParams()
-        subParams.topMargin = dp(8) - pad
-        column.addView(sub, subParams)
+        // 1) tagline
+        val tagLetters = ArrayList<TextView>()
+        val tagRow = makeRow(activity.getString(R.string.awg_splash_tagline), 15f, 0xCCFFFFFF.toInt(), 0.12f, tagLetters)
+        column.addView(tagRow, LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT))
+
+        // 2) brand name (big gap above so the two animations never overlap)
+        val nameLetters = ArrayList<TextView>()
+        val nameRow = makeRow(activity.getString(R.string.brand_name), 34f, 0xFFFFFFFF.toInt(), 0.01f, nameLetters)
+        val nameParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        nameParams.topMargin = dp(56)
+        column.addView(nameRow, nameParams)
+
+        // 3) signature logo
+        val logo = ImageView(activity)
+        logo.setImageResource(R.drawable.splash_signature)
+        logo.scaleType = ImageView.ScaleType.FIT_CENTER
+        roomFor(logo)
+        val logoParams = wrapParams(dp(170) + 2 * pad, dp(214) + 2 * pad)
+        logoParams.topMargin = dp(44) - pad
+        column.addView(logo, logoParams)
+
         column.clipChildren = false
         overlay.clipChildren = false
-
         overlay.addView(
             column,
             FrameLayout.LayoutParams(
@@ -123,14 +129,19 @@ object SplashOverlay {
         }
         overlay.setOnClickListener { dismiss() }
 
-        // Logo first, then the letters one after another, then the small caption.
-        FlyIn.play(logo, delayMs = 0L, totalMs = 2200L, scaleFrom = 2.2f, rotationFrom = 55f, dropDp = 30f, blurDp = 16f)
-        var t = 300L
-        for (letter in letters) {
-            FlyIn.play(letter, delayMs = t)
-            t += 60L + Random.nextInt(45)
+        // Timeline
+        var t = 250L
+        for (letter in tagLetters) {
+            FlyIn.play(letter, delayMs = t, totalMs = 2200L, scaleFrom = 2.0f, rotationFrom = 55f, dropDp = 18f, blurDp = 9f)
+            t += 30L
         }
-        FlyIn.play(sub, delayMs = t, totalMs = 1600L, scaleFrom = 1.6f, rotationFrom = 40f, dropDp = 12f, blurDp = 8f)
-        handler.postDelayed({ dismiss() }, t + 1500L)
+        t += 350L
+        for (letter in nameLetters) {
+            FlyIn.play(letter, delayMs = t)
+            t += 55L + Random.nextInt(35)
+        }
+        t += 350L
+        FlyIn.play(logo, delayMs = t, totalMs = 2400L, scaleFrom = 1.8f, rotationFrom = 45f, dropDp = 30f, blurDp = 16f)
+        handler.postDelayed({ dismiss() }, t + 1700L)
     }
 }
