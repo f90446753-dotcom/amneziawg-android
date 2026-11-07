@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="awg_sheet_sub_title">Import from SUB link</string>
+    <string name="awg_sheet_sub_sub">Paste a subscription link to add its configs</string>
+    <string name="awg_sub_dialog_title">Subscription link</string>
+    <string name="awg_sub_dialog_message">Paste your SUB link. Every AmneziaWG / WireGuard config found in it will be added as a tunnel.</string>
+    <string name="awg_sub_hint">https://example.com/sub/…</string>
+    <string name="awg_sub_import">Import</string>
+    <string name="awg_sub_working">Fetching subscription…</string>
+    <string name="awg_sub_bad_url">That does not look like a link (it must start with http:// or https://)</string>
+    <string name="awg_sub_none">No AmneziaWG / WireGuard config was found in this link</string>
+    <string name="awg_sub_error">Could not import from the link: %s</string>
+    <plurals name="awg_sub_done">
+        <item quantity="one">Imported %d config from the subscription</item>
+        <item quantity="other">Imported %d configs from the subscription</item>
+    </plurals>
+    <string name="awg_sub_partial">Imported %1$d, failed %2$d: %3$s</string>
+</resources>

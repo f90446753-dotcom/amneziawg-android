@@ -72,6 +72,11 @@ class AddTunnelsSheet : BottomSheetDialogFragment() {
                     dismiss()
                     onRequestScanQRCode()
                 }
+                dialog.findViewById<View>(R.id.create_from_sub)?.setOnClickListener {
+                    val host = activity
+                    dismiss()
+                    if (host != null) org.amnezia.awg.util.SubImporter.start(host)
+                }
             }
         })
         val gradientDrawable = GradientDrawable().apply {
